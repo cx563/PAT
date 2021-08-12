@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h>   // c++ 初值列相当强大 只要定义了容器的类型 那初值列直接可以作为一个容器对象 任何容器均可  不知道初值 就调用默认构造函数即可
 using namespace std;
 using gg = long long;
 int main()
