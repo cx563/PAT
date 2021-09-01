@@ -16,6 +16,7 @@ int main()
 {
    ios::sync_with_stdio(false);
    cin.tie(0);
+   init();    //   记得去初始化
    gg n,numb = -1,k,pre,b;
    cin>>n;
    while(n--){
