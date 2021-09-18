@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
-using namespace std;
-using gg = long long;
+#include <bits/stdc++.h>   //  为何不像之前一题，维护两个pri队列 customer 和 window ？
+using namespace std;      //  原因是这样的 我们需要维护这样的信息，队伍中有没有vip等待球员。如果有，那vip球桌是要优先
+using gg = long long;     // 分配给他的，但什么是等待，是他来了之后没有空球桌 而不是他没有来，那我们就要将球桌空闲时间和他到的时间进行比较 若时间早于球桌空闲时刻，这才叫等待 显然这样就相对复杂了 我们将其并入一条时间线 只要此时action是桌子空闲，在等待队列里的vip一定是等待的 逻辑会清晰很多
 struct Player{   //  维护每个球员的信息
     gg arrive, server, vip;   //  到达时间 打球时间 是否为vip;
 };
@@ -8,8 +8,8 @@ struct Action{
     gg tableNum, playerNum, time;  //  球桌编号 占用球桌球员编号 结束时间 或达到时间
     bool operator<(const Action& b)const{
         return tie(b.time) < tie(this->time);  //  根据时间进行优先级  无论是到场 还是 球桌租用结束
-    }
-};
+    }                                   //  以给球员分配球桌为驱动 将球员的到场 和 球桌的空闲放到一条时间轴上
+};                    
 void output(gg time){
     cout<<fixed<<setfill('0')<<setw(2)<<time / 3600<<":"<<setw(2)<<time%3600/60<<":"<<setw(2)<<time%60<<" ";
 }
@@ -26,8 +26,8 @@ int main()
        char ch;
        cin>>h>>ch>>m>>ch>>s>>p>>vip;
        player.push_back({h*3600+m*60+s,min(p,120ll) * 60, vip});
-       actions.push({-1,i,player[i].arrive});
-   }
+       actions.push({-1,i,player[i].arrive});    //  为什么这里初始条件是各个球员的到场时间而没有窗口初始空闲时间？
+   }                                            //  原因：球员分配球桌后，显然会入队该球桌下一次空闲时刻，那显然初始空闲时刻是没有含义的  而且，将全部桌子加入初始空闲set 查找也是相当方便 但之后，桌子空闲时间是有明显含义的，需要入队
    cin>>ki>>mi;
    vector<gg>ans(ki);  //  每个球桌被占用的次数
    vector<bool>vip(ki, false);  //  每个球桌是否为vip球桌
